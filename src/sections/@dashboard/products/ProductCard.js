@@ -1,4 +1,5 @@
 import PropTypes from 'prop-types';
+import { useNavigate } from 'react-router-dom';
 // @mui
 import { Box, Card, Link, Typography, Stack } from '@mui/material';
 import { styled } from '@mui/material/styles';
@@ -25,15 +26,18 @@ ShopProductCard.propTypes = {
 };
 
 export default function ShopProductCard({ product }) {
-  const { name, cover, price, colors, status, priceSale } = product;
-
+  const { id, name, coverImage, price, colors, status, priceSales } = product;
+  const navigate = useNavigate();
+  const handleClick = () => {
+    navigate(`/dashboard/products/${id}`, { replace: false });
+  };
   return (
-    <Card>
+    <Card onClick={handleClick}>
       <Box sx={{ pt: '100%', position: 'relative' }}>
         {status && (
           <Label
             variant="filled"
-            color={(status === 'sale' && 'error') || 'info'}
+            color={(status === 'SALE' && 'error') || 'info'}
             sx={{
               zIndex: 9,
               top: 16,
@@ -45,7 +49,7 @@ export default function ShopProductCard({ product }) {
             {status}
           </Label>
         )}
-        <StyledProductImg alt={name} src={cover} />
+        <StyledProductImg alt={name} src={coverImage} />
       </Box>
 
       <Stack spacing={2} sx={{ p: 3 }}>
@@ -66,7 +70,7 @@ export default function ShopProductCard({ product }) {
                 textDecoration: 'line-through',
               }}
             >
-              {priceSale && fCurrency(priceSale)}
+              {fCurrency(priceSales)}
             </Typography>
             &nbsp;
             {fCurrency(price)}

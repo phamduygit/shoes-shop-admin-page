@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
 // @mui
@@ -7,7 +7,13 @@ import {
   Alert,
   AlertTitle,
   Breadcrumbs,
+  Button,
   Container,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
   InputAdornment,
   Link,
   MenuItem,
@@ -16,14 +22,16 @@ import {
   Typography,
 } from '@mui/material';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { LoadingButton } from '@mui/lab';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
 
-export default function AddProductPage() {
+export default function ProdcutDetailPage() {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
+
+  const { id } = useParams();
 
   const handleClick = () => {
     navigate('/dashboard/products', { replace: true });
@@ -53,16 +61,15 @@ export default function AddProductPage() {
 
   const allStatus = ['NEW', 'SALE', 'NONE'];
 
-  const handleClickSave = async () => {
-    console.log('On click save');
+  const handleClickUpdate = async () => {
     dispatch({
       type: 'START_LOADING',
       payload: true,
     });
     try {
       const response = await axios({
-        method: 'post',
-        url: 'http://localhost:8080/api/shoes/create',
+        method: 'put',
+        url: `http://localhost:8080/api/shoes/${id}`,
         data: {
           name,
           price,
@@ -83,7 +90,7 @@ export default function AddProductPage() {
       setResponseState('error');
       setShowAlert(true);
       setTitleErrorMessage('Something went wrong');
-      setErrorMessage(Object.values(err.response.data).join(", "));
+      setErrorMessage(Object.values(err.response.data).join(', '));
       console.log(err);
     }
     dispatch({
@@ -115,7 +122,7 @@ export default function AddProductPage() {
       });
       setImageUrl(response.data.url);
     } catch (err) {
-      console.log(err)
+      console.log(err);
     }
     dispatch({
       type: 'END_LOADING',
@@ -125,12 +132,98 @@ export default function AddProductPage() {
 
   const [imageUrl, setImageUrl] = useState('');
 
-  const handleChange = async () => {
+  // Disable change content inside textfield
+  const handleChange = () => {
     setImageUrl('');
   };
 
+  const fetchProductFromId = async (id) => {
+    try {
+      const response = await axios({
+        method: 'get',
+        url: `http://localhost:8080/api/shoes/${id}`,
+      });
+      const responseData = response.data;
+      console.log(responseData);
+      setName(responseData.name);
+      setPrice(responseData.price);
+      setImageUrl(responseData.coverImage);
+      setDescription(responseData.description);
+      setColors(responseData.colors.join(','));
+      setSizes(responseData.sizes.join(','));
+      setStatus(responseData.status);
+      setPriceSales(responseData.priceSales);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+  useEffect(() => {
+    dispatch({
+      type: 'START_LOADING',
+      payload: true,
+    });
+    fetchProductFromId(id);
+    dispatch({
+      type: 'END_LOADING',
+      payload: true,
+    });
+  }, [id, dispatch]);
+
+  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
+
+  const handleClickDelete = () => {
+    setOpenDeleteDialog(true);
+  };
+
+  const handleCloseDeleteDialog = () => {
+    setOpenDeleteDialog(false);
+  };
+
+  const handleConfirmDelete = async () => {
+    dispatch({
+      type: 'START_LOADING',
+      payload: true,
+    });
+    try {
+      const response = await axios({
+        method: 'delete',
+        url: `http://localhost:8080/api/shoes/${id}`,
+      });
+      setImageUrl(response.data.url);
+    } catch (err) {
+      console.log(err);
+    }
+    dispatch({
+      type: 'END_LOADING',
+      payload: true,
+    });
+    setOpenDeleteDialog(false);
+    navigate('/dashboard/products', { replace: true });
+  }
+
   return (
     <>
+      <div>
+        <Dialog
+          open={openDeleteDialog}
+          onClose={handleCloseDeleteDialog}
+          aria-labelledby="alert-dialog-title"
+          aria-describedby="alert-dialog-description"
+        >
+          <DialogTitle id="alert-dialog-title">{"Are you sure?"}</DialogTitle>
+          <DialogContent>
+            <DialogContentText id="alert-dialog-description">
+              This item will be automated remove out of list and you can't reserve it
+            </DialogContentText>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={handleCloseDeleteDialog}>Dismiss</Button>
+            <Button color="error" onClick={handleConfirmDelete} autoFocus>
+              Agree
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </div>
       <Helmet>
         <title> Dashboard: Products | Minimal UI </title>
       </Helmet>
@@ -142,7 +235,7 @@ export default function AddProductPage() {
             </Link>
             ,
             <Link underline="hover" key="1" color="#000000">
-              <Typography variant="h4">Add Product</Typography>
+              <Typography variant="h4">Product Detail</Typography>
             </Link>
             ,
           </Breadcrumbs>
@@ -219,14 +312,26 @@ export default function AddProductPage() {
         {isShowAlert && (
           <Stack mb={3}>
             <Alert severity={responseStatus}>
-              <AlertTitle>{responseStatus === "success" ? "Success" : "Error"}</AlertTitle>
+              <AlertTitle>{responseStatus === 'success' ? 'Success' : 'Error'}</AlertTitle>
               {titleErrorMessage} — <strong>{errorMessage}</strong>
             </Alert>
           </Stack>
         )}
-        <LoadingButton fullWidth size="large" type="submit" variant="contained" onClick={handleClickSave}>
-          Save
-        </LoadingButton>
+        <Stack direction="row" mb={3} spacing={5}>
+          <LoadingButton
+            fullWidth
+            size="large"
+            type="submit"
+            variant="contained"
+            onClick={handleClickDelete}
+            color="error"
+          >
+            Delete
+          </LoadingButton>
+          <LoadingButton fullWidth size="large" type="submit" variant="contained" onClick={handleClickUpdate}>
+            Update
+          </LoadingButton>
+        </Stack>
       </Container>
     </>
   );

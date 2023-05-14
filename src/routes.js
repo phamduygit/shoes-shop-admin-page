@@ -10,10 +10,13 @@ import Page404 from './pages/Page404';
 import ProductsPage from './pages/ProductsPage';
 import DashboardAppPage from './pages/DashboardAppPage';
 import AddProductPage from './pages/AddProductPage';
+import ProdcutDetailPage from './pages/ProductDetailPage';
+
 
 // ----------------------------------------------------------------------
 
 export default function Router() {
+
   const routes = useRoutes([
     {
       path: '/dashboard',
@@ -25,6 +28,7 @@ export default function Router() {
         { path: 'products', element: <ProductsPage /> },
         { path: 'blog', element: <BlogPage /> },
         { path: 'products/add', element: <AddProductPage /> },
+        { path: 'products/:id', element: <ProdcutDetailPage /> },
       ],
     },
     {

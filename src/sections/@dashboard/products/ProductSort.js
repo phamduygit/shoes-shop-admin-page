@@ -16,11 +16,18 @@ const SORT_BY_OPTIONS = [
 export default function ShopProductSort() {
   const [open, setOpen] = useState(null);
 
+  const [sortType, setSortType] = useState("newest");
+
+  const [sortTypeTitle, setSortTypeTitle] = useState("Newest");
+
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const handleClose = (event) => {
+    const selectedOption = SORT_BY_OPTIONS.find(option => option.label === event.target.innerText);
+    setSortType(selectedOption.value);
+    setSortTypeTitle(selectedOption.label);
     setOpen(null);
   };
 
@@ -34,11 +41,10 @@ export default function ShopProductSort() {
       >
         Sort By:&nbsp;
         <Typography component="span" variant="subtitle2" sx={{ color: 'text.secondary' }}>
-          Newest
+          {sortTypeTitle}
         </Typography>
       </Button>
       <Menu
-        keepMounted
         anchorEl={open}
         open={Boolean(open)}
         onClose={handleClose}
@@ -48,7 +54,7 @@ export default function ShopProductSort() {
         {SORT_BY_OPTIONS.map((option) => (
           <MenuItem
             key={option.value}
-            selected={option.value === 'newest'}
+            selected={option.value === `${sortType}`}
             onClick={handleClose}
             sx={{ typography: 'body2' }}
           >

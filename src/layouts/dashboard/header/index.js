@@ -7,10 +7,10 @@ import { bgBlur } from '../../../utils/cssStyles';
 // components
 import Iconify from '../../../components/iconify';
 //
-import Searchbar from './Searchbar';
 import AccountPopover from './AccountPopover';
-import LanguagePopover from './LanguagePopover';
 import NotificationsPopover from './NotificationsPopover';
+import LinearBuffer from '../../../components/linear-buffer';
+
 
 // ----------------------------------------------------------------------
 
@@ -45,6 +45,7 @@ Header.propTypes = {
 export default function Header({ onOpenNav }) {
   return (
     <StyledRoot>
+      <LinearBuffer/>
       <StyledToolbar>
         <IconButton
           onClick={onOpenNav}
