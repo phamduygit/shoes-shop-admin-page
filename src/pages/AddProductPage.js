@@ -26,7 +26,7 @@ export default function AddProductPage() {
   const dispatch = useDispatch();
 
   const handleClick = () => {
-    navigate('/dashboard/products', { replace: true });
+    navigate('/dashboard/products/all', { replace: true });
   };
 
   const [isShowAlert, setShowAlert] = useState(false);

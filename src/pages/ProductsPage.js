@@ -10,6 +10,7 @@ import Iconify from '../components/iconify';
 import { BlogPostsSearch } from '../sections/@dashboard/blog';
 
 import posts from '../_mock/blog';
+import ProductSearch from '../components/product-search';
 
 // ----------------------------------------------------------------------
 
@@ -32,7 +33,7 @@ export default function ProductsPage() {
         </Stack>
 
         <Stack mb={2} direction="row" alignItems="center" justifyContent="space-between" flexWrap="wrap">
-          <BlogPostsSearch posts={posts} />
+          <ProductSearch/>
           <Stack direction="row" flexWrap="wrap-reverse" alignItems="center" justifyContent="flex-end">
             <Stack direction="row" spacing={1} flexShrink={0} sx={{ my: 1 }}>
               <ProductSort />

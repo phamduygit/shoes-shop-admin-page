@@ -34,7 +34,7 @@ export default function ProdcutDetailPage() {
   const { id } = useParams();
 
   const handleClick = () => {
-    navigate('/dashboard/products', { replace: true });
+    navigate('/dashboard/products/all', { replace: true });
   };
 
   const [isShowAlert, setShowAlert] = useState(false);
@@ -198,7 +198,7 @@ export default function ProdcutDetailPage() {
       payload: true,
     });
     setOpenDeleteDialog(false);
-    navigate('/dashboard/products', { replace: true });
+    navigate('/dashboard/products/all', { replace: true });
   }
 
   return (

@@ -1,4 +1,7 @@
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { useLocation, useNavigate } from 'react-router-dom';
+import queryString from 'query-string';
 // @mui
 import { Menu, Button, MenuItem, Typography } from '@mui/material';
 // component
@@ -14,20 +17,92 @@ const SORT_BY_OPTIONS = [
 ];
 
 export default function ShopProductSort() {
+  const location = useLocation();
+
   const [open, setOpen] = useState(null);
 
-  const [sortType, setSortType] = useState("newest");
+  const [sortType, setSortType] = useState('feature');
 
-  const [sortTypeTitle, setSortTypeTitle] = useState("Newest");
+  const [sortTypeTitle, setSortTypeTitle] = useState('Feature');
+
+  const dispatch = useDispatch();
+
+  const navigate = useNavigate();
 
   const handleOpen = (event) => {
     setOpen(event.currentTarget);
   };
 
   const handleClose = (event) => {
-    const selectedOption = SORT_BY_OPTIONS.find(option => option.label === event.target.innerText);
+    const selectedOption = SORT_BY_OPTIONS.find((option) => option.label === event.target.innerText);
     setSortType(selectedOption.value);
+    dispatch({
+      type: selectedOption.value.toUpperCase(),
+      payload: true,
+    });
     setSortTypeTitle(selectedOption.label);
+    let queryParams = null;
+    switch (selectedOption.value) {
+      case 'featured': {
+        queryParams = queryString.parseUrl(location.search).query;
+        queryParams.price = null;
+        queryParams.newest = null;
+        const url = queryString.stringifyUrl(
+          { url: '/dashboard/products/all', query: queryParams },
+          {
+            skipNull: true,
+            skipEmptyString: true,
+          }
+        );
+        navigate(url, { replace: true });
+        break;
+      }
+      case 'newest': {
+        queryParams = queryString.parseUrl(location.search).query;
+        queryParams.price = null;
+        queryParams.newest = true;
+        const url = queryString.stringifyUrl(
+          { url: '/dashboard/products/all', query: queryParams },
+          {
+            skipNull: true,
+            skipEmptyString: true,
+          }
+        );
+        navigate(url, { replace: true });
+        break;
+      }
+      case 'priceDesc': {
+        queryParams = queryString.parseUrl(location.search).query;
+        queryParams.price = -1;
+        queryParams.newest = null;
+        const url = queryString.stringifyUrl(
+          { url: '/dashboard/products/all', query: queryParams },
+          {
+            skipNull: true,
+            skipEmptyString: true,
+          }
+        );
+        navigate(url, { replace: true });
+        break;
+      }
+      case 'priceAsc': {
+        queryParams = queryString.parseUrl(location.search).query;
+        queryParams.price = 1;
+        queryParams.newest = null;
+        const url = queryString.stringifyUrl(
+          { url: '/dashboard/products/all', query: queryParams },
+          {
+            skipNull: true,
+            skipEmptyString: true,
+          }
+        );
+        navigate(url, { replace: true });
+        break;
+      }
+      default:
+        navigate('/dashboard/products/all', { replace: true });
+        break;
+    }
     setOpen(null);
   };
 
