@@ -35,7 +35,7 @@ export default function ProductSearch() {
       console.log("Navigate");
       navigate(url, { replace: true });
     }, 300)
-  }, [searchText])
+  }, [searchText, location.search, navigate])
 
   return (
     <>
