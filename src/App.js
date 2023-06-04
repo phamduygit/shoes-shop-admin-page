@@ -9,6 +9,7 @@ import ThemeProvider from './theme';
 import { StyledChart } from './components/chart';
 import ScrollToTop from './components/scroll-to-top';
 import store from './stores';
+import AuthProvider from './sections/auth/AuthProvider';
 
 // ----------------------------------------------------------------------
 
@@ -16,13 +17,15 @@ export default function App() {
   return (
     <Provider store={store}>
       <HelmetProvider>
-        <BrowserRouter>
-          <ThemeProvider>
-            <ScrollToTop />
-            <StyledChart />
-            <Router />
-          </ThemeProvider>
-        </BrowserRouter>
+        <AuthProvider>
+          <BrowserRouter>
+            <ThemeProvider>
+              <ScrollToTop />
+              <StyledChart />
+              <Router />
+            </ThemeProvider>
+          </BrowserRouter>
+        </AuthProvider>
       </HelmetProvider>
     </Provider>
   );

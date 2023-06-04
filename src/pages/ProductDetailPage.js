@@ -141,7 +141,7 @@ export default function ProdcutDetailPage() {
     try {
       const response = await axios({
         method: 'get',
-        url: `http://localhost:8080/api/shoes/${id}`,
+        url: `http://localhost:8080/api/v1/shoes/${id}`,
       });
       const responseData = response.data;
       console.log(responseData);

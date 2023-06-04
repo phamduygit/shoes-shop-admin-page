@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 // @mui
 import { alpha } from '@mui/material/styles';
 import { Box, Divider, Typography, Stack, MenuItem, Avatar, IconButton, Popover } from '@mui/material';
@@ -25,6 +27,10 @@ const MENU_OPTIONS = [
 // ----------------------------------------------------------------------
 
 export default function AccountPopover() {
+  const navigate = useNavigate();
+
+  const dispatch = useDispatch();
+
   const [open, setOpen] = useState(null);
 
   const handleOpen = (event) => {
@@ -34,6 +40,23 @@ export default function AccountPopover() {
   const handleClose = () => {
     setOpen(null);
   };
+
+  const handleLogout = () => {
+    setOpen(null);
+    navigate('/login', { replace: true });
+    // 2. Save accessToken and refreshToken to localStorage
+
+    localStorage.setItem("accessToken", null);
+
+    localStorage.setItem("refreshToken", null);
+
+    const jwtObject = null
+
+    dispatch({
+      type: 'JWT',
+      payload: jwtObject,
+    });
+  }
 
   return (
     <>
@@ -97,7 +120,7 @@ export default function AccountPopover() {
 
         <Divider sx={{ borderStyle: 'dashed' }} />
 
-        <MenuItem onClick={handleClose} sx={{ m: 1 }}>
+        <MenuItem onClick={handleLogout} sx={{ m: 1 }}>
           Logout
         </MenuItem>
       </Popover>

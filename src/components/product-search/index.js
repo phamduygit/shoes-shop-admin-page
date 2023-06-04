@@ -4,9 +4,6 @@ import { useEffect, useRef, useState } from 'react';
 import queryString from 'query-string';
 import Iconify from '../iconify/Iconify';
 
-
-
-
 export default function ProductSearch() {
   const navigate = useNavigate();
   const [searchText, setSearchText] = useState();
@@ -14,28 +11,31 @@ export default function ProductSearch() {
   const typingTimeoutRef = useRef(null);
   const handleOnChange = (event) => {
     setSearchText(event.target.value);
-    
   };
 
   useEffect(() => {
-    const queryParams = queryString.parseUrl(location.search).query;
-    queryParams.name = searchText
-    const url = queryString.stringifyUrl(
-      { url: '/dashboard/products/all', query: queryParams },
-      {
-        skipNull: true,
-        skipEmptyString: true,
-      }
-    );
     if (typingTimeoutRef.current) {
       clearTimeout(typingTimeoutRef.current);
     }
 
     typingTimeoutRef.current = setTimeout(() => {
-      console.log("Navigate");
+      const queryParams = queryString.parseUrl(location.search).query;
+      
+      if (queryParams.name !== searchText) {
+        queryParams.page = null;
+      }
+      queryParams.name = searchText;
+
+      const url = queryString.stringifyUrl(
+        { url: '/dashboard/products/all', query: queryParams },
+        {
+          skipNull: true,
+          skipEmptyString: true,
+        }
+      );
       navigate(url, { replace: true });
-    }, 300)
-  }, [searchText, location.search, navigate])
+    }, 300);
+  }, [searchText, location.search, navigate]);
 
   return (
     <>
