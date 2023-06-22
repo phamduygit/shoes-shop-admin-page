@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 // @mui
 import { alpha } from '@mui/material/styles';
 import { Box, Divider, Typography, Stack, MenuItem, Avatar, IconButton, Popover } from '@mui/material';
@@ -30,6 +30,8 @@ export default function AccountPopover() {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
+
+  const userInfo = useSelector((state) => state.user.object);
 
   const [open, setOpen] = useState(null);
 
@@ -77,7 +79,7 @@ export default function AccountPopover() {
           }),
         }}
       >
-        <Avatar src={account.photoURL} alt="photoURL" />
+        <Avatar src={userInfo.avatar} alt="photoURL" />
       </IconButton>
 
       <Popover
@@ -101,10 +103,10 @@ export default function AccountPopover() {
       >
         <Box sx={{ my: 1.5, px: 2.5 }}>
           <Typography variant="subtitle2" noWrap>
-            {account.displayName}
+            {`${userInfo.firstName} ${userInfo.lastName}`}
           </Typography>
           <Typography variant="body2" sx={{ color: 'text.secondary' }} noWrap>
-            {account.email}
+            {userInfo.email}
           </Typography>
         </Box>
 

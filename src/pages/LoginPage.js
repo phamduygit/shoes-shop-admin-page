@@ -70,7 +70,7 @@ export default function LoginPage() {
 
         <Container maxWidth="sm">
           <StyledContent>
-            <Typography variant="h4" gutterBottom>
+            <Typography variant="h4" gutterBottom mb={3}>
               Sign in to Admin Page
             </Typography>
 

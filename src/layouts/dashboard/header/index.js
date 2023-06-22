@@ -1,4 +1,6 @@
 import PropTypes from 'prop-types';
+import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 // @mui
 import { styled } from '@mui/material/styles';
 import { Box, Stack, AppBar, Toolbar, IconButton } from '@mui/material';
@@ -10,6 +12,7 @@ import Iconify from '../../../components/iconify';
 import AccountPopover from './AccountPopover';
 import NotificationsPopover from './NotificationsPopover';
 import LinearBuffer from '../../../components/linear-buffer';
+import axios from '../../../services/axios';
 
 
 // ----------------------------------------------------------------------
@@ -43,9 +46,26 @@ Header.propTypes = {
 };
 
 export default function Header({ onOpenNav }) {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    console.log('load user info');
+    const fetData = async () => {
+      try {
+        const res = await axios.get('/api/v1/user');
+        console.log("User info:", res);
+        dispatch({
+          type: 'USER_INFO',
+          payload: res.data,
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetData();
+  });
   return (
     <StyledRoot>
-      <LinearBuffer/>
+      <LinearBuffer />
       <StyledToolbar>
         <IconButton
           onClick={onOpenNav}

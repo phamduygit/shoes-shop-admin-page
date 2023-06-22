@@ -18,8 +18,6 @@ export default function ProductList({ ...other }) {
   const [totalPageNumber, setTotalPageNumber] = useState(0);
   const jwtObject = useSelector((state) => state.jwt.object);
 
-  console.log("jwtObject", jwtObject)
-
   const handleOnClickPageItem = (event, value) => {
     const queryParams = queryString.parseUrl(location.search).query;
     queryParams.page = value;

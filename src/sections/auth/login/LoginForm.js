@@ -36,6 +36,11 @@ export default function LoginForm() {
       console.log(response);
       const accessToken = response?.data?.accessToken;
       const refreshToken = response?.data?.refreshToken;
+      const userInfo = response?.data?.user;
+
+      if (userInfo.role !== "ADMIN") {
+        return;
+      }
       // 2. Save accessToken and refreshToken to localStorage
 
       localStorage.setItem("accessToken", accessToken);

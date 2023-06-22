@@ -13,35 +13,13 @@ import ProductsPage from './pages/ProductsPage';
 import DashboardAppPage from './pages/DashboardAppPage';
 import AddProductPage from './pages/AddProductPage';
 import ProdcutDetailPage from './pages/ProductDetailPage';
-import axios from './api/axios';
+import axios from './services/axios';
 
 // ----------------------------------------------------------------------
 
 export default function Router() {
   // const jwtObject = useSelector((state) => state.jwt.object);
-  const navigate = useNavigate();
   const location = useLocation();
-
-  useEffect(() => {
-    if (location.pathname === "/login" || location.pathname === "/") {
-      return;
-    }
-    const token = localStorage.getItem('accessToken');
-    console.log('location.pathname: ', location.pathname);
-    const checkValidToken = async () => {
-      try {
-        const res = await axios.get('/api/v1/user/check-token', { headers: { Authorization: `Bearer ${token}` } });
-        console.log('res:', res);
-        return res;
-      } catch (err) {
-        console.log('err:', err);
-        navigate('/login', { replace: true });
-        return err;
-      }
-    };
-    checkValidToken()
-  }, [location.pathname, navigate]);
-
   
   const routes = useRoutes([
     {
