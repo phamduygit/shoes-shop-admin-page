@@ -1,16 +1,16 @@
-import axios from 'axios';
-
-const token = localStorage.getItem('accessToken');
-
-const myRefreshToken = localStorage.getItem('refreshToken');
+import customAxios from 'axios';
 
 const refreshToken = async () => {
   try {
-    console.log('get new token using refresh token', myRefreshToken);
+    const myRefreshToken = localStorage.getItem('refreshToken');
     // Make a request to refresh the token
-    const res = await axios.post('http://localhost:8080/api/v1/auth/refresh-token', {}, {
-      headers: { Authorization: `Bearer ${myRefreshToken}`},
-    });
+    const res = await customAxios.post(
+      'http://localhost:8080/api/v1/auth/refresh-token',
+      {},
+      {
+        headers: { Authorization: `Bearer ${myRefreshToken}` },
+      }
+    );
 
     console.log('Response refresh token:', res);
 
@@ -20,31 +20,31 @@ const refreshToken = async () => {
   }
 };
 
-const instance = axios.create({
+const axios = customAxios.create({
   baseURL: 'http://localhost:8080',
-  headers: {
-    Authorization: `Bearer ${token}`, // Replace with your authorization token
-  },
 });
 
-instance.interceptors.request.use((request) => {
-  console.log('instance.interceptors.request.use');
-  return request;
-});
+axios.setToken = (token) => {
+  axios.defaults.headers.common.Authorization = `Bearer ${token}`;
+  localStorage.setItem('accessToken', token);
+};
 
-instance.interceptors.response.use(
+axios.interceptors.request.use((request) => request);
+
+axios.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response.status === 401) {
       return refreshToken().then((rs) => {
-        const {accessToken} = rs.data;
+        const { accessToken } = rs.data;
         localStorage.setItem('accessToken', accessToken);
-        const {config} = error.response;
+        axios.setToken(accessToken);
+        const { config } = error.response;
         config.headers = {
           Authorization: `Bearer ${accessToken}`, // Replace with your authorization token
         };
         config.baseURL = 'http://localhost:8080';
-        return instance(config);
+        return axios(config);
       });
     }
     if (error.response) {
@@ -55,4 +55,5 @@ instance.interceptors.response.use(
   }
 );
 
-export default instance;
+export default axios;
+

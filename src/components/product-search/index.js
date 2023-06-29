@@ -27,15 +27,18 @@ export default function ProductSearch() {
       queryParams.name = searchText;
 
       const url = queryString.stringifyUrl(
-        { url: '/dashboard/products/all', query: queryParams },
+        { url: '/dashboard/products/all', query: {'name': searchText} },
         {
           skipNull: true,
-          skipEmptyString: true,
         }
       );
-      navigate(url, { replace: true });
+      console.log("Navigate bug here with query params: ", queryParams);
+      if (url !== '/dashboard/products/all') {
+        navigate(url, { replace: true });
+      }
+      
     }, 300);
-  }, [searchText, location.search, navigate]);
+  }, [location.search, navigate, searchText]);
 
   return (
     <>

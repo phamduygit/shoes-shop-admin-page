@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import queryString from 'query-string';
@@ -16,7 +16,6 @@ export default function ProductList({ ...other }) {
   const location = useLocation();
   const [page, setPage] = useState(1);
   const [totalPageNumber, setTotalPageNumber] = useState(0);
-  const jwtObject = useSelector((state) => state.jwt.object);
 
   const handleOnClickPageItem = (event, value) => {
     const queryParams = queryString.parseUrl(location.search).query;

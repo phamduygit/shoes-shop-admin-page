@@ -1,7 +1,6 @@
 import { Helmet } from 'react-helmet-async';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import axios from 'axios';
 // @mui
 import {
   Alert,
@@ -25,6 +24,7 @@ import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import { useNavigate, useParams } from 'react-router-dom';
 import { LoadingButton } from '@mui/lab';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
+import axios from '../../services/axios';
 
 export default function ProdcutDetailPage() {
   const navigate = useNavigate();
@@ -185,11 +185,10 @@ export default function ProdcutDetailPage() {
       payload: true,
     });
     try {
-      const response = await axios({
+      await axios({
         method: 'delete',
-        url: `http://localhost:8080/api/shoes/${id}`,
+        url: `http://localhost:8080/api/v1/shoes/${id}`,
       });
-      setImageUrl(response.data.url);
     } catch (err) {
       console.log(err);
     }
@@ -198,7 +197,7 @@ export default function ProdcutDetailPage() {
       payload: true,
     });
     setOpenDeleteDialog(false);
-    navigate('/dashboard/products/all', { replace: true });
+    // navigate('/dashboard/products/all', { replace: true });
   }
 
   return (
@@ -234,7 +233,7 @@ export default function ProdcutDetailPage() {
               <Typography variant="h4">Products</Typography>
             </Link>
             ,
-            <Link underline="hover" key="1" color="#000000">
+            <Link underline="hover" key="2" color="#000000">
               <Typography variant="h4">Product Detail</Typography>
             </Link>
             ,

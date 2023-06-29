@@ -4,8 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 // @mui
 import { alpha } from '@mui/material/styles';
 import { Box, Divider, Typography, Stack, MenuItem, Avatar, IconButton, Popover } from '@mui/material';
-// mocks_
-import account from '../../../_mock/account';
 
 // ----------------------------------------------------------------------
 
@@ -16,10 +14,6 @@ const MENU_OPTIONS = [
   },
   {
     label: 'Profile',
-    icon: 'eva:person-fill',
-  },
-  {
-    label: 'Settings',
     icon: 'eva:settings-2-fill',
   },
 ];
@@ -39,18 +33,27 @@ export default function AccountPopover() {
     setOpen(event.currentTarget);
   };
 
+  const handleOnClickOption = (value) => {
+    setOpen(null);
+    if (value === "Profile") {
+      navigate("/dashboard/profile", {replace: true})
+    } else if (value === "Home") {
+      navigate("/dashboard/app", {replace: true})
+    }
+  };
+
   const handleClose = () => {
     setOpen(null);
   };
 
   const handleLogout = () => {
     setOpen(null);
-    navigate('/login', { replace: true });
+    
     // 2. Save accessToken and refreshToken to localStorage
 
-    localStorage.setItem("accessToken", null);
+    localStorage.removeItem("accessToken");
 
-    localStorage.setItem("refreshToken", null);
+    localStorage.removeItem("refreshToken");
 
     const jwtObject = null
 
@@ -58,6 +61,8 @@ export default function AccountPopover() {
       type: 'JWT',
       payload: jwtObject,
     });
+
+    navigate('/login', { replace: true });
   }
 
   return (
@@ -114,7 +119,7 @@ export default function AccountPopover() {
 
         <Stack sx={{ p: 1 }}>
           {MENU_OPTIONS.map((option) => (
-            <MenuItem key={option.label} onClick={handleClose}>
+            <MenuItem key={option.label} onClick={() => handleOnClickOption(option.label)}>
               {option.label}
             </MenuItem>
           ))}

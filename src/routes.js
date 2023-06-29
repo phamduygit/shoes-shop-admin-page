@@ -1,26 +1,27 @@
-import { Navigate, useLocation, useNavigate, useRoutes } from 'react-router-dom';
-// import { useSelector } from 'react-redux';
-import { useEffect } from 'react';
+import { Navigate, useRoutes } from 'react-router-dom';
 // layouts
 import DashboardLayout from './layouts/dashboard';
 import SimpleLayout from './layouts/simple';
-//
-import BlogPage from './pages/BlogPage';
 import UserPage from './pages/UserPage';
 import LoginPage from './pages/LoginPage';
 import Page404 from './pages/Page404';
-import ProductsPage from './pages/ProductsPage';
+import ProductsPage from './pages/product/ProductsPage';
 import DashboardAppPage from './pages/DashboardAppPage';
-import AddProductPage from './pages/AddProductPage';
-import ProdcutDetailPage from './pages/ProductDetailPage';
-import axios from './services/axios';
+import AddProductPage from './pages/product/AddProductPage';
+import ProdcutDetailPage from './pages/product/ProductDetailPage';
+import ProfilePage from './pages/ProfilePage';
+import PromotePage from './pages/promote/PromotePage';
+import BrandPage from './pages/brand/BrandPage';
+import BrandDetailPage from './pages/brand/BrandDetailPage';
+import AddBrandPage from './pages/brand/AddBrandPage';
+import PromoteDetailPage from './pages/promote/PromoteDetailPage';
+import AddPromotePage from './pages/promote/AddPromotePage';
 
 // ----------------------------------------------------------------------
 
 export default function Router() {
   // const jwtObject = useSelector((state) => state.jwt.object);
-  const location = useLocation();
-  
+
   const routes = useRoutes([
     {
       path: 'login',
@@ -33,10 +34,17 @@ export default function Router() {
         { element: <Navigate to="/dashboard/app" />, index: true },
         { path: 'app', element: <DashboardAppPage /> },
         { path: 'user', element: <UserPage /> },
+        { path: 'profile', element: <ProfilePage /> },
+        { path: 'promote', element: <PromotePage /> },
+        { path: 'promote/:id', element: <PromoteDetailPage />},
+        { path: 'promote/add', element: <AddPromotePage />},
+        { path: 'brand', element: <BrandPage /> },
+        { path: 'brand/:id', element: <BrandDetailPage /> },
+        { path: 'brand/add', element: <AddBrandPage />},
         { path: 'products/all', element: <ProductsPage /> },
-        { path: 'blog', element: <BlogPage /> },
         { path: 'products/add', element: <AddProductPage /> },
         { path: 'products/:id', element: <ProdcutDetailPage /> },
+
       ],
     },
     {

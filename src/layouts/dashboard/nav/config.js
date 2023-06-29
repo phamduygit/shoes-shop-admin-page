@@ -22,10 +22,20 @@ const navConfig = [
     icon: icon('ic_cart'),
   },
   {
-    title: 'blog',
-    path: '/dashboard/blog',
-    icon: icon('ic_blog'),
+    title: 'brand',
+    path: '/dashboard/brand',
+    icon: icon('ic_brand'),
   },
+  {
+    title: 'promote',
+    path: '/dashboard/promote',
+    icon: icon('ic_promote'),
+  },
+  {
+    title: 'profile',
+    path: '/dashboard/profile',
+    icon: icon('ic_setting')
+  }
 ];
 
 export default navConfig;

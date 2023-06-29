@@ -1,20 +1,20 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import axios from 'axios';
 // @mui
-import { Link, Stack, IconButton, InputAdornment, TextField, Checkbox } from '@mui/material';
+import { Stack, IconButton, InputAdornment, TextField } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // components
 import Iconify from '../../../components/iconify';
+import axios from '../../../services/axios';
 
 
 export default function LoginForm() {
   const dispatch = useDispatch();
 
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState('admin@gmail.com');
 
-  const [password, setPassword] = useState('');
+  const [password, setPassword] = useState('123456');
 
   const navigate = useNavigate();
 
@@ -25,6 +25,7 @@ export default function LoginForm() {
     console.log(email, password);
     // 1. Request login to get accessToke and refreshToken
     try {
+      console.log('username', email);
       const response = await axios({
         method: 'post',
         url: 'http://localhost:8080/api/v1/auth/login',
@@ -47,6 +48,8 @@ export default function LoginForm() {
 
       localStorage.setItem("refreshToken", refreshToken);
 
+      axios.defaults.headers.common.Authorization = `Bearer ${accessToken}`;
+
       const jwtObject = {
         accessToken,
         refreshToken
@@ -67,11 +70,12 @@ export default function LoginForm() {
   return (
     <>
       <Stack spacing={3} mb={3} >
-        <TextField name="email" label="Email address" onInput={(e) => setEmail(e.target.value)} />
+        <TextField  defaultValue={"admin@gmail.com"} name="email" label="Email address" onInput={(e) => setEmail(e.target.value)} />
 
         <TextField
           name="password"
           label="Password"
+          defaultValue={"123456"}
           type={showPassword ? 'text' : 'password'}
           onInput={(e) => setPassword(e.target.value)}
           InputProps={{
