@@ -34,7 +34,7 @@ export default function ProdcutDetailPage() {
   const { id } = useParams();
 
   const handleClick = () => {
-    navigate('/dashboard/products/all', { replace: true });
+    navigate(-1);
   };
 
   const [isShowAlert, setShowAlert] = useState(false);
@@ -57,19 +57,27 @@ export default function ProdcutDetailPage() {
 
   const [status, setStatus] = useState('NONE');
 
+  const [brandName, setBrandName] = useState('');
+
+  const [brand, setBrand] = useState();
+
+  const [allBrand, setAllBrand] = useState([]);
+
   const [priceSales, setPriceSales] = useState(0);
 
   const allStatus = ['NEW', 'SALE', 'NONE'];
 
   const handleClickUpdate = async () => {
+    console.log('Brand Id:', brand);
     dispatch({
       type: 'START_LOADING',
       payload: true,
     });
     try {
+      console.log('Brand Id:', brand);
       const response = await axios({
         method: 'put',
-        url: `http://localhost:8080/api/shoes/${id}`,
+        url: `http://localhost:8080/api/v1/shoes/${id}?brandId=${brand.id}`,
         data: {
           name,
           price,
@@ -143,6 +151,7 @@ export default function ProdcutDetailPage() {
         method: 'get',
         url: `http://localhost:8080/api/v1/shoes/${id}`,
       });
+      console.log(response);
       const responseData = response.data;
       console.log(responseData);
       setName(responseData.name);
@@ -153,16 +162,31 @@ export default function ProdcutDetailPage() {
       setSizes(responseData.sizes.join(','));
       setStatus(responseData.status);
       setPriceSales(responseData.priceSales);
+      setBrandName(responseData.brandCategory.name);
+      setBrand(responseData.brandCategory);
     } catch (err) {
       console.log(err);
     }
   };
+
   useEffect(() => {
     dispatch({
       type: 'START_LOADING',
       payload: true,
     });
     fetchProductFromId(id);
+    
+    const fetAllBrand = async () => {
+      try {
+        const resposne = await axios({ method: 'get', url: '/api/v1/brand-category' });
+        const responseData = resposne.data;
+        console.log(responseData.data);
+        setAllBrand(responseData.data);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetAllBrand();
     dispatch({
       type: 'END_LOADING',
       payload: true,
@@ -198,7 +222,13 @@ export default function ProdcutDetailPage() {
     });
     setOpenDeleteDialog(false);
     // navigate('/dashboard/products/all', { replace: true });
-  }
+  };
+
+  const handleSelectBrand = (e) => {
+    setBrandName(e.target.value);
+    const brand = allBrand.find((el) => el.name === e.target.value);
+    setBrand(brand);
+  };
 
   return (
     <>
@@ -209,7 +239,7 @@ export default function ProdcutDetailPage() {
           aria-labelledby="alert-dialog-title"
           aria-describedby="alert-dialog-description"
         >
-          <DialogTitle id="alert-dialog-title">{"Are you sure?"}</DialogTitle>
+          <DialogTitle id="alert-dialog-title">{'Are you sure?'}</DialogTitle>
           <DialogContent>
             <DialogContentText id="alert-dialog-description">
               This item will be automated remove out of list and you can't reserve it
@@ -306,6 +336,22 @@ export default function ProdcutDetailPage() {
               fullWidth
             />
           </Stack>
+        </Stack>
+        <Stack direction="row" mb={3} spacing={5}>
+          <TextField
+            id="outlined-select-currency"
+            select
+            label="Brand"
+            value={brandName}
+            fullWidth
+            onChange={handleSelectBrand}
+          >
+            {allBrand.map((brand) => (
+              <MenuItem key={brand.id} value={brand.name}>
+                {brand.name}
+              </MenuItem>
+            ))}
+          </TextField>
         </Stack>
 
         {isShowAlert && (

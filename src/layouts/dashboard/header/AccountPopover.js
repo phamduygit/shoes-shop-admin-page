@@ -84,7 +84,7 @@ export default function AccountPopover() {
           }),
         }}
       >
-        <Avatar src={userInfo.avatar} alt="photoURL" />
+        <Avatar src={userInfo.avatar ?? "https://cdn0.iconfinder.com/data/icons/unigrid-flat-human-vol-2/90/011_101_anonymous_anonym_hacker_vendetta_user_human_avatar-512.png"} alt="photoURL" />
       </IconButton>
 
       <Popover

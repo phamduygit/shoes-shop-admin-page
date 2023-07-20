@@ -1,5 +1,5 @@
 import { Helmet } from 'react-helmet-async';
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
 // @mui
@@ -53,6 +53,35 @@ export default function AddProductPage() {
 
   const allStatus = ['NEW', 'SALE', 'NONE'];
 
+  const [brandName, setBrandName] = useState('');
+
+  const [brand, setBrand] = useState();
+
+  const [allBrand, setAllBrand] = useState([]);
+
+  useEffect(() => {
+    dispatch({
+      type: 'START_LOADING',
+      payload: true,
+    });
+    const fetAllBrand = async () => {
+      try {
+        const resposne = await axios({ method: 'get', url: '/api/v1/brand-category' });
+        const responseData = resposne.data;
+        console.log(responseData.data);
+        setAllBrand(responseData.data);
+        setBrandName(responseData.data[0].name);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+    fetAllBrand();
+    dispatch({
+      type: 'END_LOADING',
+      payload: true,
+    });
+  }, [dispatch]);
+
   const handleClickSave = async () => {
     console.log('On click save');
     dispatch({
@@ -62,7 +91,7 @@ export default function AddProductPage() {
     try {
       const response = await axios({
         method: 'post',
-        url: 'http://localhost:8080/api/shoes/create',
+        url: `http://localhost:8080/api/shoes/create?brandId=${brand.id}`,
         data: {
           name,
           price,
@@ -127,6 +156,12 @@ export default function AddProductPage() {
 
   const handleChange = async () => {
     setImageUrl('');
+  };
+
+  const handleSelectBrand = (e) => {
+    setBrandName(e.target.value);
+    const brand = allBrand.find((el) => el.name === e.target.value);
+    setBrand(brand);
   };
 
   return (
@@ -214,6 +249,22 @@ export default function AddProductPage() {
               fullWidth
             />
           </Stack>
+        </Stack>
+        <Stack direction="row" mb={3} spacing={5}>
+          <TextField
+            id="outlined-select-currency"
+            select
+            label="Brand"
+            value={brandName}
+            fullWidth
+            onChange={handleSelectBrand}
+          >
+            {allBrand.map((brand) => (
+              <MenuItem key={brand.id} value={brand.name}>
+                {brand.name}
+              </MenuItem>
+            ))}
+          </TextField>
         </Stack>
 
         {isShowAlert && (

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useLocation, useNavigate } from 'react-router-dom';
 import queryString from 'query-string';
@@ -21,7 +21,7 @@ export default function ShopProductSort() {
 
   const [open, setOpen] = useState(null);
 
-  const [sortType, setSortType] = useState('feature');
+  const [sortType, setSortType] = useState('');
 
   const [sortTypeTitle, setSortTypeTitle] = useState('Feature');
 
@@ -30,11 +30,40 @@ export default function ShopProductSort() {
   const navigate = useNavigate();
 
   const handleOpen = (event) => {
+    console.log('whaaa')
     setOpen(event.currentTarget);
   };
 
+  const queryParams = queryString.parseUrl(location.search).query;
+
+  useEffect(() => {
+    if (sortType === '') {
+      console.log(queryParams);
+      if (queryParams && queryParams.price === '-1') {
+        setSortTypeTitle('Price: Low-High');
+        setSortType('priceDesc');
+      } else if (queryParams && queryParams.price === '1') {
+        setSortTypeTitle('Price: High-Low');
+        setSortType('priceAsc');
+      }
+      else if (queryParams && queryParams.newest === 'true') {
+        setSortTypeTitle('Newest');
+        setSortType('newest');
+      } else {
+        setSortTypeTitle('Feature');
+        setSortType('featured');
+      }
+    }
+    
+  }, [queryParams, sortType, sortTypeTitle]);
+
   const handleClose = (event) => {
+    
     const selectedOption = SORT_BY_OPTIONS.find((option) => option.label === event.target.innerText);
+    if (selectedOption == null) {
+      setOpen(null);
+      return;
+    }
     setSortType(selectedOption.value);
     dispatch({
       type: selectedOption.value.toUpperCase(),
@@ -44,6 +73,7 @@ export default function ShopProductSort() {
     let queryParams = null;
     switch (selectedOption.value) {
       case 'featured': {
+        // Add new query params to current query params is default
         queryParams = queryString.parseUrl(location.search).query;
         queryParams.price = null;
         queryParams.newest = null;
@@ -58,6 +88,7 @@ export default function ShopProductSort() {
         break;
       }
       case 'newest': {
+        // Add new query params to current query params (newest is true)
         queryParams = queryString.parseUrl(location.search).query;
         queryParams.price = null;
         queryParams.newest = true;
@@ -72,6 +103,7 @@ export default function ShopProductSort() {
         break;
       }
       case 'priceDesc': {
+        // Add new query params to current query params (price decrease)
         queryParams = queryString.parseUrl(location.search).query;
         queryParams.price = -1;
         queryParams.newest = null;
@@ -86,6 +118,7 @@ export default function ShopProductSort() {
         break;
       }
       case 'priceAsc': {
+        // Add new query params to current query params (price increase)
         queryParams = queryString.parseUrl(location.search).query;
         queryParams.price = 1;
         queryParams.newest = null;

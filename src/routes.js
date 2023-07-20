@@ -16,6 +16,8 @@ import BrandDetailPage from './pages/brand/BrandDetailPage';
 import AddBrandPage from './pages/brand/AddBrandPage';
 import PromoteDetailPage from './pages/promote/PromoteDetailPage';
 import AddPromotePage from './pages/promote/AddPromotePage';
+import OrderPage from './pages/order/OrderPage';
+import OrderDetailPage from './pages/order/OrderDetailPage';
 
 // ----------------------------------------------------------------------
 
@@ -35,6 +37,8 @@ export default function Router() {
         { path: 'app', element: <DashboardAppPage /> },
         { path: 'user', element: <UserPage /> },
         { path: 'profile', element: <ProfilePage /> },
+        { path: 'order', element: <OrderPage /> },
+        { path: 'order/:id', element: <OrderDetailPage /> },
         { path: 'promote', element: <PromotePage /> },
         { path: 'promote/:id', element: <PromoteDetailPage />},
         { path: 'promote/add', element: <AddPromotePage />},

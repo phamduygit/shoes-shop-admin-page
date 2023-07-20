@@ -2,7 +2,7 @@ import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
 import { useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
-
+import { useNavigate } from 'react-router-dom';
 // @mui
 import {
   Card,
@@ -18,28 +18,32 @@ import {
   TableCell,
   Container,
   Typography,
+  IconButton,
   TableContainer,
   TablePagination,
 } from '@mui/material';
 // components
-import Label from '../components/label';
-import Iconify from '../components/iconify';
-import Scrollbar from '../components/scrollbar';
+import Label from '../../components/label';
+import Iconify from '../../components/iconify';
+import Scrollbar from '../../components/scrollbar';
 // sections
-import { UserListHead } from '../sections/@dashboard/user';
+import { UserListHead } from '../../sections/@dashboard/user';
 // mock
-import USERLIST from '../_mock/user';
+import USERLIST from '../../_mock/user';
 
-import axios from '../services/axios';
+import axios from '../../services/axios';
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'name', label: 'Name', alignRight: false },
-  { id: 'email', label: 'Email', alignRight: false },
-  { id: 'phone', label: 'Phone', alignRight: false },
-  { id: 'role', label: 'Role', alignRight: false },
-  { id: 'status', label: 'Status', alignRight: false },
+  { id: 'product', label: 'Product', alignRight: false },
+  { id: 'price', label: 'Price', alignRight: false },
+  { id: 'quantity', label: 'Qauntity', alignRight: false },
+  { id: 'userId', label: 'User ID', alignRight: false },
+  { id: 'status', label: 'Shipping status', alignRight: false },
+  { id: 'address', label: 'Address', alignRight: false },
+
+  { id: '' },
 ];
 
 // ----------------------------------------------------------------------
@@ -73,7 +77,8 @@ function applySortFilter(array, comparator, query) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function UserPage() {
+export default function OrderPage() {
+  const navigate = useNavigate();
   const [open, setOpen] = useState(null);
 
   const [page, setPage] = useState(0);
@@ -89,6 +94,18 @@ export default function UserPage() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const [listOrder, setListOrder] = useState([]);
+
+  const [selectedOrderId, setSelectedOrderId] = useState(0);
+
+  const handleOpenMenu = (event, id) => {
+    setOpen(event.currentTarget);
+    setSelectedOrderId(id);
+  };
+
+  const handleOnClickEdit = () => {
+    console.log(selectedOrderId);
+    navigate(`/dashboard/order/${selectedOrderId}`, { replace: false });;
+  };
 
   const handleCloseMenu = () => {
     setOpen(null);
@@ -128,8 +145,8 @@ export default function UserPage() {
           type: 'START_LOADING',
           payload: true,
         });
-        const res = await axios.get('/api/v1/user/all');
-        setListOrder(res.data);
+        const res = await axios.get('/api/v1/order/admin');
+        setListOrder(res.data.list);
 
         dispatch({
           type: 'END_LOADING',
@@ -173,31 +190,38 @@ export default function UserPage() {
                   {applySortFilter(listOrder, getComparator(order, orderBy), null)
                     .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row) => {
-                      const { id, firstName, lastName, avatar, phoneNumber, email, role } = row;
-                      const selectedUser = selected.indexOf(firstName) !== -1;
+                      const { id, productName, imageUrl, price, quantity, userId, shippingStatus, address } = row;
+                      const selectedUser = selected.indexOf(productName) !== -1;
 
                       return (
                         <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedUser}>
                           <TableCell component="th" scope="row">
                             <Stack direction="row" alignItems="center" spacing={2}>
-                              <Avatar alt={`${firstName} ${lastName}`} src={avatar} />
+                              <Avatar alt={productName} src={imageUrl} />
                               <Typography variant="subtitle2" noWrap>
-                                {`${firstName} ${lastName}`}
+                                {productName}
                               </Typography>
                             </Stack>
                           </TableCell>
 
-                          <TableCell align="left">{email}</TableCell>
+                          <TableCell align="left">{price}</TableCell>
 
-                          <TableCell align="left">{phoneNumber}</TableCell>
+                          <TableCell align="left">{quantity}</TableCell>
 
-                          <TableCell align="left">{role}</TableCell>
+                          <TableCell align="left">{userId}</TableCell>
 
                           <TableCell align="left">
-                            <Label color={'success'}>Active</Label>
+                            <Label color={(shippingStatus === 'PREPARE' && 'error') || (shippingStatus === 'IN_DELIVERY' && 'warning') || (shippingStatus === 'WAIT_FOR_RECEIVE' && 'info') || 'success'}>
+                              {shippingStatus}
+                            </Label>
                           </TableCell>
+                          <TableCell align="left">{address}</TableCell>
 
-                          
+                          <TableCell align="right">
+                            <IconButton size="large" color="inherit" onClick={(event) => handleOpenMenu(event, id)}>
+                              <Iconify icon={'eva:more-vertical-fill'} />
+                            </IconButton>
+                          </TableCell>
                         </TableRow>
                       );
                     })}
@@ -241,7 +265,7 @@ export default function UserPage() {
           },
         }}
       >
-        <MenuItem>
+        <MenuItem onClick={handleOnClickEdit}>
           <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
           Edit
         </MenuItem>

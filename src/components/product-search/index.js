@@ -1,49 +1,48 @@
+import { useEffect, useRef, useState } from 'react';
 import { InputAdornment, TextField } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { useEffect, useRef, useState } from 'react';
+
 import queryString from 'query-string';
 import Iconify from '../iconify/Iconify';
 
+
 export default function ProductSearch() {
   const navigate = useNavigate();
-  const [searchText, setSearchText] = useState();
   const location = useLocation();
   const typingTimeoutRef = useRef(null);
+  const [searchText, setSearchText] = useState((queryString.parseUrl(location.search).query.name ?? ""));
+  const [isChangeSearchText, setIsChangeSearchText] = useState(false);
   const handleOnChange = (event) => {
+    setIsChangeSearchText(true);
     setSearchText(event.target.value);
   };
+
 
   useEffect(() => {
     if (typingTimeoutRef.current) {
       clearTimeout(typingTimeoutRef.current);
     }
-
     typingTimeoutRef.current = setTimeout(() => {
-      const queryParams = queryString.parseUrl(location.search).query;
-      
-      if (queryParams.name !== searchText) {
-        queryParams.page = null;
+      if (!isChangeSearchText) {
+        return;
       }
-      queryParams.name = searchText;
-
       const url = queryString.stringifyUrl(
         { url: '/dashboard/products/all', query: {'name': searchText} },
         {
           skipNull: true,
+          skipEmptyString: true,
         }
       );
-      console.log("Navigate bug here with query params: ", queryParams);
-      if (url !== '/dashboard/products/all') {
-        navigate(url, { replace: true });
-      }
-      
+      navigate(url, { replace: true });
+
     }, 300);
-  }, [location.search, navigate, searchText]);
+  }, [isChangeSearchText, navigate, searchText]);
 
   return (
     <>
       <TextField
-        placeholder="Search post..."
+        placeholder="Search product..."
+        value={searchText}
         onChange={handleOnChange}
         InputProps={{
           startAdornment: (
