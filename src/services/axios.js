@@ -1,7 +1,7 @@
 import customAxios from 'axios';
 
 
-const BASE_URL_SERVER = 'http://ec2-54-151-180-18.ap-southeast-1.compute.amazonaws.com';
+const BASE_URL_SERVER = 'https://pmdshoesshop.online';
 
 const refreshToken = async () => {
   try {
