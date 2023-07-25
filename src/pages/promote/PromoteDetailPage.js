@@ -71,7 +71,7 @@ export default function PromoteDetailPage() {
     try {
       const response = await axios({
         method: 'put',
-        url: `http://localhost:8080/api/v1/promote/${id}`,
+        url: `/api/v1/promote/${id}`,
         data: {
           title,
           description,
@@ -101,7 +101,7 @@ export default function PromoteDetailPage() {
     try {
       const response = await axios({
         method: 'delete',
-        url: `http://localhost:8080/api/v1/brand-category/${id}`,
+        url: `/api/v1/brand-category/${id}`,
       });
       if (response != null) {
         navigate('/dashboard/brand', { replace: true });
@@ -135,7 +135,7 @@ export default function PromoteDetailPage() {
     try {
       const response = await axios({
         method: 'post',
-        url: 'http://localhost:8080/uploadImage',
+        url: '/uploadImage',
         data: bodyFormData,
         headers: { 'Content-Type': 'multipart/form-data' },
       });

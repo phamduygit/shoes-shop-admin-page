@@ -39,7 +39,7 @@ export default function AddPromotePage() {
     try {
       const response = await axios({
         method: 'post',
-        url: `http://localhost:8080/api/v1/promote`,
+        url: `/api/v1/promote`,
         data: {
           title,
           description,
@@ -81,7 +81,7 @@ export default function AddPromotePage() {
     try {
       const response = await axios({
         method: 'post',
-        url: 'http://localhost:8080/uploadImage',
+        url: '/uploadImage',
         data: bodyFormData,
         headers: { 'Content-Type': 'multipart/form-data' },
       });

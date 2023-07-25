@@ -28,7 +28,7 @@ export default function ProfilePage() {
     try {
       const response = await axios({
         method: 'put',
-        url: 'http://localhost:8080/api/v1/user',
+        url: '/api/v1/user',
         data: {
           firstName: data.firstName,
           lastName: data.lastName,
@@ -69,7 +69,7 @@ export default function ProfilePage() {
     try {
       const response = await axios({
         method: 'post',
-        url: 'http://localhost:8080/uploadImage',
+        url: '/uploadImage',
         data: bodyFormData,
         headers: { 'Content-Type': 'multipart/form-data' },
       });

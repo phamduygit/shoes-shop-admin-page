@@ -73,7 +73,7 @@ export default function PromotePage() {
               <Avatar src="/assets/icons/ic_add.svg" />
             </ListItemDecorator>
             <ListItemContent>
-              <Typography>Add new brand</Typography>
+              <Typography>Add new promote</Typography>
             </ListItemContent>
           </ListItemButton>
         </List>

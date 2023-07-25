@@ -1,7 +1,7 @@
 import { Helmet } from 'react-helmet-async';
 import { useEffect, useRef, useState } from 'react';
 import { useDispatch } from 'react-redux';
-import axios from 'axios';
+
 // @mui
 import {
   Alert,
@@ -19,6 +19,7 @@ import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import { useNavigate } from 'react-router-dom';
 import { LoadingButton } from '@mui/lab';
 import AttachFileIcon from '@mui/icons-material/AttachFile';
+import axios from '../../services/axios';
 
 export default function AddProductPage() {
   const navigate = useNavigate();
@@ -91,7 +92,7 @@ export default function AddProductPage() {
     try {
       const response = await axios({
         method: 'post',
-        url: `http://localhost:8080/api/shoes/create?brandId=${brand.id}`,
+        url: `/api/v1/shoes/create?brandId=${brand.id}`,
         data: {
           name,
           price,
@@ -138,7 +139,7 @@ export default function AddProductPage() {
     try {
       const response = await axios({
         method: 'post',
-        url: 'http://localhost:8080/uploadImage',
+        url: '/uploadImage',
         data: bodyFormData,
         headers: { 'Content-Type': 'multipart/form-data' },
       });

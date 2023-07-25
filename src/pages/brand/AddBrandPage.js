@@ -25,7 +25,7 @@ export default function AddBrandPage() {
     try {
       const response = await axios({
         method: 'post',
-        url: `http://localhost:8080/api/v1/brand-category`,
+        url: `/api/v1/brand-category`,
         data: {
           name: brandName,
           image: imageUrl,
@@ -63,7 +63,7 @@ export default function AddBrandPage() {
     try {
       const response = await axios({
         method: 'post',
-        url: 'http://localhost:8080/uploadImage',
+        url: '/uploadImage',
         data: bodyFormData,
         headers: { 'Content-Type': 'multipart/form-data' },
       });

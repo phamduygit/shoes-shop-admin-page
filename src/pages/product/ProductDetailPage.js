@@ -77,7 +77,7 @@ export default function ProdcutDetailPage() {
       console.log('Brand Id:', brand);
       const response = await axios({
         method: 'put',
-        url: `http://localhost:8080/api/v1/shoes/${id}?brandId=${brand.id}`,
+        url: `/api/v1/shoes/${id}?brandId=${brand.id}`,
         data: {
           name,
           price,
@@ -124,7 +124,7 @@ export default function ProdcutDetailPage() {
     try {
       const response = await axios({
         method: 'post',
-        url: 'http://localhost:8080/uploadImage',
+        url: '/uploadImage',
         data: bodyFormData,
         headers: { 'Content-Type': 'multipart/form-data' },
       });
@@ -149,7 +149,7 @@ export default function ProdcutDetailPage() {
     try {
       const response = await axios({
         method: 'get',
-        url: `http://localhost:8080/api/v1/shoes/${id}`,
+        url: `/api/v1/shoes/${id}`,
       });
       console.log(response);
       const responseData = response.data;
@@ -211,7 +211,7 @@ export default function ProdcutDetailPage() {
     try {
       await axios({
         method: 'delete',
-        url: `http://localhost:8080/api/v1/shoes/${id}`,
+        url: `/api/v1/shoes/${id}`,
       });
     } catch (err) {
       console.log(err);

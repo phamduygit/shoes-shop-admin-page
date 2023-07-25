@@ -74,7 +74,7 @@ export default function OrderDetailPage() {
     try {
       const response = await axios({
         method: 'put',
-        url: `http://localhost:8080/api/v1/order/admin/${id}`,
+        url: `/api/v1/order/admin/${id}`,
         data: {
           shippingStatus,
         },

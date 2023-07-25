@@ -28,7 +28,7 @@ export default function LoginForm() {
       console.log('username', email);
       const response = await axios({
         method: 'post',
-        url: 'http://localhost:8080/api/v1/auth/login',
+        url: '/api/v1/auth/login',
         data: {
           email,
           password,

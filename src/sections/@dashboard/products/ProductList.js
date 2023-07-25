@@ -1,4 +1,3 @@
-import axios from 'axios';
 import { useDispatch } from 'react-redux';
 import { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
@@ -6,6 +5,7 @@ import queryString from 'query-string';
 // @mui
 import { Grid, Pagination, Stack } from '@mui/material';
 import ShopProductCard from './ProductCard';
+import axios from '../../../services/axios';
 
 // ----------------------------------------------------------------------
 
@@ -42,7 +42,7 @@ export default function ProductList({ ...other }) {
       setPage(page + 1)
     }
     const currentUrl = queryString.stringifyUrl(
-      { url: 'http://localhost:8080/api/v1/shoes/all', query: { price, newest, name, page } },
+      { url: '/api/v1/shoes/all', query: { price, newest, name, page } },
       {
         skipNull: true,
         skipEmptyString: true,
