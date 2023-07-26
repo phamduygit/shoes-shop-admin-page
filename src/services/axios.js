@@ -7,6 +7,7 @@ const refreshToken = async () => {
   try {
     const myRefreshToken = localStorage.getItem('refreshToken');
     // Make a request to refresh the token
+    if (myRefreshToken == null) return null;
     
     const res = await customAxios.post(
       `${BASE_URL_SERVER}/api/v1/auth/refresh-token`,
@@ -52,9 +53,9 @@ axios.interceptors.response.use(
     if (error.response.status === 401) {
       return refreshToken()
         .then((rs) => {
-          console.log(error);
+          if (rs == null) return null;
           const { accessToken } = rs.data;
-          console.log("new access token", accessToken);
+          console.log("Refresh success: ", accessToken);
           localStorage.setItem('accessToken', accessToken);
           axios.setToken(accessToken);
           const { config } = error.response;
