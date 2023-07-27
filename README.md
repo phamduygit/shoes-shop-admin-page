@@ -16,9 +16,9 @@ This is the admin website used to manage products, orders, users, ads, brands...
 ## 1. Overview
 Website demo: https://melodious-beijinho-5a4a13.netlify.app
 
-<img width="300" height="180" alt="Screenshot 2023-07-27 at 11 06 11 AM" src="https://github.com/phamduygit/shoes-shop-admin-page/assets/48823695/57bb0bee-e5e7-4d98-89aa-9ee2109b0b0a">
-<img width="300" height="180" alt="Screenshot 2023-07-27 at 11 07 20 AM" src="https://github.com/phamduygit/shoes-shop-admin-page/assets/48823695/57f1a602-fea8-4109-a3d4-26e7e0872180">
-<img width="300" height="180" alt="Screenshot 2023-07-27 at 11 05 58 AM" src="https://github.com/phamduygit/shoes-shop-admin-page/assets/48823695/0269139d-39f0-4da0-8cb8-408b1c366f6a">
+<img width="300" height="180" alt="Screenshot 2023-07-27 at 11 06 11 AM" src="https://res.cloudinary.com/dvhhz53rr/image/upload/v1690460531/Screenshot_2023-07-27_at_11.06.11_AM_o9dhgf.png">
+<img width="300" height="180" alt="Screenshot 2023-07-27 at 11 07 20 AM" src="https://res.cloudinary.com/dvhhz53rr/image/upload/v1690460520/Screenshot_2023-07-27_at_11.07.20_AM_ijvwmh.png">
+<img width="300" height="180" alt="Screenshot 2023-07-27 at 11 05 58 AM" src="https://res.cloudinary.com/dvhhz53rr/image/upload/v1690460591/Screenshot_2023-07-27_at_11.06.21_AM_ovb8pl.png">
 
 ## 2. Technology
 - Just use simple framework and library: React, MUI, Axios, Redux,..
