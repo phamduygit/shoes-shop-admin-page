@@ -1,10 +1,34 @@
-# Getting Started with Create React App
+# Overview Shoes Shope Project
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+1. Admin website - React
+- Deployed website: https://melodious-beijinho-5a4a13.netlify.app
+- Source: https://github.com/phamduygit/shoes-shop-admin-page
+2. Client mobile application - Flutter
+- APK file for Android: waiting for build
+- Source: https://github.com/phamduygit/shoes-shop-app
+3. Backend application - Spring boot
+- Deployed AWS Cloud: https://ec2-18-142-252-134.ap-southeast-1.compute.amazonaws.com/swagger-ui/index.html
+- DNS server: https://pmdshoesshop.online/swagger-ui/index.html
+- Source: https://github.com/phamduygit/shoes-shop-backend
 
-## Available Scripts
+# About Admin website
+This is the admin website used to manage products, orders, users, ads, brands...
+## 1. Overview
+Website demo: https://melodious-beijinho-5a4a13.netlify.app
 
+<img width="300" alt="Screenshot 2023-07-27 at 11 06 11 AM" src="https://github.com/phamduygit/shoes-shop-admin-page/assets/48823695/57bb0bee-e5e7-4d98-89aa-9ee2109b0b0a">
+<img width="300" alt="Screenshot 2023-07-27 at 11 07 20 AM" src="https://github.com/phamduygit/shoes-shop-admin-page/assets/48823695/57f1a602-fea8-4109-a3d4-26e7e0872180">
+<img width="300" alt="Screenshot 2023-07-27 at 11 05 58 AM" src="https://github.com/phamduygit/shoes-shop-admin-page/assets/48823695/0269139d-39f0-4da0-8cb8-408b1c366f6a">
+
+## 2. Technology
+- Just use simple framework and library: React, MUI, Axios, Redux,..
+
+## 3. How to build project
 In the project directory, you can run:
+
+### `npm install`
+
+Install all dependencies inside application.
 
 ### `npm start`
 
@@ -29,18 +53,3 @@ Your app is ready to be deployed!
 
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
-### `npm run eject`
-
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
-
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
-
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
