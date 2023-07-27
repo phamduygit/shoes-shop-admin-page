@@ -4,7 +4,7 @@
 - Deployed website: https://melodious-beijinho-5a4a13.netlify.app
 - Source: https://github.com/phamduygit/shoes-shop-admin-page
 2. Client mobile application - Flutter
-- APK file for Android: waiting for build
+- APK file for Android: https://drive.google.com/file/d/1_6BrRpuQNwS4yxJ3uPHBHtd5UzEJqJ2o/view?usp=sharing
 - Source: https://github.com/phamduygit/shoes-shop-app
 3. Backend application - Spring boot
 - Deployed AWS Cloud: https://ec2-18-142-252-134.ap-southeast-1.compute.amazonaws.com/swagger-ui/index.html
