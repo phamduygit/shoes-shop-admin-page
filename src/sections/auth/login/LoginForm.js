@@ -60,7 +60,7 @@ export default function LoginForm() {
         payload: jwtObject,
       });
 
-      navigate('/dashboard/app', { replace: false });
+      navigate('/dashboard/products/all', { replace: false });
       
     } catch (e) {
       console.log(e);
